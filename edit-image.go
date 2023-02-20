@@ -9,6 +9,7 @@ import (
 const (
 	OperationLCompresstion = Operation(iota)
 	OperationRotate
+	OperationGrayScale
 )
 
 type OperationArgs struct {
@@ -35,6 +36,9 @@ func EditImage(pathIn, pathOut string, op Operation, args *OperationArgs) error 
 		break
 	case OperationRotate:
 		newImage, err = RotateImage(img, args.RotationDeg)
+		break
+	case OperationGrayScale:
+		newImage, err = GrayScaleImage(img)
 		break
 	}
 

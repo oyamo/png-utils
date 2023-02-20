@@ -32,6 +32,15 @@ func TestEditImage(t *testing.T) {
 				pathOut: "/home/oyamo/GolandProjects/image-utils/example/worship-experience-compress.png",
 			},
 			wantErr: false,
+		}, {
+			name: "GrayScale Image",
+			args: args{
+				op:      OperationGrayScale,
+				args:    &OperationArgs{RotationDeg: 30},
+				pathIn:  "/home/oyamo/GolandProjects/image-utils/example/worship-experience.png",
+				pathOut: "/home/oyamo/GolandProjects/image-utils/example/worship-experience-gray.png",
+			},
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
