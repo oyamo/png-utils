@@ -22,3 +22,15 @@ func ReadImage(path string) (image.Image, error) {
 
 	return img, nil
 }
+
+func SaveImage(img image.Image, path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	err = png.Encode(file, img)
+	if err != nil {
+		return err
+	}
+	return nil
+}
