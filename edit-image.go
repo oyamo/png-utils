@@ -3,6 +3,7 @@ package imageutils
 import (
 	"errors"
 	"image"
+	"reflect"
 )
 
 const (
@@ -41,7 +42,8 @@ func EditImage(pathIn, pathOut string, op Operation, args *OperationArgs) error 
 		return err
 	}
 
-	if newImage != nil {
+	if newImage == nil || reflect.ValueOf(newImage).Kind() == reflect.Ptr &&
+		reflect.ValueOf(newImage).IsNil() {
 		return errors.New("fatal error")
 	}
 

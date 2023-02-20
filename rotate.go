@@ -5,11 +5,12 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"reflect"
 )
 
 // RotateImage Rotates the image deg degrees about the center of the image
 func RotateImage(img image.Image, deg int) (image.Image, error) {
-	if img == nil {
+	if img == nil || reflect.ValueOf(img).Kind() == reflect.Ptr && reflect.ValueOf(img).IsNil() {
 		return nil, fmt.Errorf("img is nil")
 	}
 	bounds := img.Bounds()
