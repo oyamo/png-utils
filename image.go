@@ -22,7 +22,3 @@ func ReadImage(path string) (image.Image, error) {
 
 	return img, nil
 }
-
-func LossLessCompress(img image.Image) (image.Image, error) {
-
-}
