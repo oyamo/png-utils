@@ -51,3 +51,24 @@ func TestEditImage(t *testing.T) {
 		})
 	}
 }
+
+func BenchEditImage(t *testing.B) {
+	type args struct {
+		pathIn  string
+		pathOut string
+		op      Operation
+		args    *OperationArgs
+	}
+
+	arg := args{
+		op:      OperationRotate,
+		args:    &OperationArgs{RotationDeg: 30},
+		pathIn:  "/home/oyamo/GolandProjects/image-utils/example/worship-experience.png",
+		pathOut: "/home/oyamo/GolandProjects/image-utils/example/worship-experience-rotate-30.png",
+	}
+
+	err := EditImage(arg.pathIn, arg.pathOut, OperationGrayScale, arg.args)
+	if err != nil {
+		return
+	}
+}

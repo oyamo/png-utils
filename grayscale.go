@@ -9,7 +9,8 @@ import (
 	"sync"
 )
 
-func grayScaleImage(img image.Image, newImgRGBA *image.RGBA, routineCount int) {
+// cropImage contains workers for grayscaling an image
+func grayScaleImage(img image.Image, newImgRGBA *image.NRGBA, routineCount int) {
 	var workGroup sync.WaitGroup
 	workGroup.Add(routineCount)
 
@@ -42,7 +43,7 @@ func GrayScaleImage(img image.Image) (image.Image, error) {
 		return nil, errors.New("img is empty")
 	}
 
-	newImgRGBA := image.NewRGBA(img.Bounds())
+	newImgRGBA := image.NewNRGBA(img.Bounds())
 	grayScaleImage(img, newImgRGBA, 4)
 	return newImgRGBA, nil
 }

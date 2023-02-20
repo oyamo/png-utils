@@ -25,10 +25,12 @@ func ReadImage(path string) (image.Image, error) {
 
 func SaveImage(img image.Image, path string) error {
 	file, err := os.Create(path)
+	defer file.Close()
 	if err != nil {
 		return err
 	}
-	err = png.Encode(file, img)
+	encoder := png.Encoder{CompressionLevel: png.BestSpeed}
+	err = encoder.Encode(file, img)
 	if err != nil {
 		return err
 	}
