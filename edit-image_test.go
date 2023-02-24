@@ -41,6 +41,33 @@ func TestEditImage(t *testing.T) {
 				pathOut: "/home/oyamo/GolandProjects/image-utils/example/worship-experience-gray.png",
 			},
 			wantErr: false,
+		}, {
+			name: "Crop Image",
+			args: args{
+				op:      OperationCrop,
+				args:    &OperationArgs{Rect: struct{ X0, X1, Y0, Y1 int }{X0: 500, X1: 1500, Y0: 500, Y1: 1500}},
+				pathIn:  "/home/oyamo/GolandProjects/image-utils/example/worship-experience.png",
+				pathOut: "/home/oyamo/GolandProjects/image-utils/example/worship-cropped.png",
+			},
+			wantErr: false,
+		}, {
+			name: "Operation Label Image",
+			args: args{
+				op:      OperationAddLabel,
+				args:    &OperationArgs{Rect: struct{ X0, X1, Y0, Y1 int }{X0: 500, X1: 1500, Y0: 500, Y1: 1500}},
+				pathIn:  "/home/oyamo/GolandProjects/image-utils/example/enduro.png",
+				pathOut: "/home/oyamo/GolandProjects/image-utils/example/enduro-labelled.png",
+			},
+			wantErr: false,
+		}, {
+			name: "Watermark Image",
+			args: args{
+				op:      OperationAddImageWatermark,
+				args:    &OperationArgs{Rect: struct{ X0, X1, Y0, Y1 int }{X0: 500, X1: 1500, Y0: 500, Y1: 1500}},
+				pathIn:  "/home/oyamo/GolandProjects/image-utils/example/enduro.png",
+				pathOut: "/home/oyamo/GolandProjects/image-utils/example/enduro-watermarked.png",
+			},
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
