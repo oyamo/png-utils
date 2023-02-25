@@ -4,7 +4,32 @@ import (
 	"errors"
 	"image"
 	"image/color"
+	"math"
 )
+
+func blend(watermark color.Color, main color.Color) color.Color {
+	wr, wg, wb, wa := watermark.RGBA()
+	mr, mg, mb, ma := main.RGBA()
+
+	// If the watermark pixel is fully transparent, return the main pixel.
+	if wa == 0 {
+		return main
+	}
+
+	// If the watermark pixel is fully opaque, return the watermark pixel.
+	if wa == 0xffff {
+		return watermark
+	}
+
+	// Calculate the blended color using the alpha values of the two pixels.
+	alpha := float64(wa) / float64(0xffff)
+	r := uint16(float64(wr)*alpha + float64(mr)*(1-alpha))
+	g := uint16(float64(wg)*alpha + float64(mg)*(1-alpha))
+	b := uint16(float64(wb)*alpha + float64(mb)*(1-alpha))
+	a := uint16(math.Max(float64(wa), float64(ma)))
+
+	return color.RGBA64{R: r, G: g, B: b, A: a}
+}
 
 func AddWatermarkImage(main image.Image, watermark image.Image, x, y int) (image.Image, error) {
 	mainImageHeight := main.Bounds().Dy()
@@ -23,19 +48,11 @@ func AddWatermarkImage(main image.Image, watermark image.Image, x, y int) (image
 
 	for i := x; i < watermarkImageWidth+x; i++ {
 		for j := y; j < watermarkImageHeight+y; j++ {
-			waterMarkPixel := watermark.At(i-x, j-y)
-			mainImagePixel := main.At(i, j)
-			r, g, b, opacity := waterMarkPixel.RGBA()
-			waterMarkColor := color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: uint8(opacity)}
-			r, g, b, o2 := mainImagePixel.RGBA()
-			mainImageColor := color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: uint8(o2)}
-			if opacity > 20 {
-				main.(*image.NRGBA).Set(i, j, waterMarkColor)
-			} else if opacity > 5 {
-				main.(*image.NRGBA).Set(i, j, mainImageColor)
-			} else {
-				main.(*image.NRGBA).Set(i, j, mainImageColor)
-			}
+			waterMarkPixelColor := watermark.At(i-x, j-y)
+			mainImagePixelColor := main.At(i, j)
+
+			blendedColor := blend(waterMarkPixelColor, mainImagePixelColor)
+			main.(*image.NRGBA).Set(i, j, blendedColor)
 		}
 	}
 
