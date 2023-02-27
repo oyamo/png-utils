@@ -23,7 +23,7 @@ func LossLessCompress(img image.Image) (image.Image, error) {
 			colorAt := img.At(atX, atY)
 			R, G, B, A := colorAt.RGBA()
 			colorAtRGBA := color.RGBA{R: uint8(R), G: uint8(G), B: uint8(B), A: uint8(A)}
-			newImage.SetRGBA(int(i), int(j), colorAtRGBA)
+			newImage.SetRGBA(i, j, colorAtRGBA)
 		}
 	}
 
